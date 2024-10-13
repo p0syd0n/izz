@@ -38,6 +38,7 @@ if ($results) {
 } else {
     error_log("No data found or query failed: " . $db->lastErrorMsg());
 }
+error_log("MESSAGES AS OF RENDERING:");
 error_log(implode(",", $messages));
 // $ciphertext = openssl_encrypt($plaintext, $cipher_method, $secret_key, 0, $iv);
 

@@ -18,15 +18,9 @@ if ($message == "") {
     exit;
 }
 
-// A secure secret key (should be stored securely, not hardcoded like this)
-$secret_key = 'my_super_secret_key';
-$iv = '1234567890123456'; 
-// Cipher method to use (AES-256-CBC is a common, strong choice)
-$cipher_method = 'AES-256-CBC';
-
 $secret_key = $_ENV['secret_key'];
 $iv = $_ENV['iv'];
-$dbcipher_methodPass = $_ENV['cipher_method'];
+$cipher_method = $_ENV['cipher_method'];
 
 $encrypted_message = openssl_encrypt($message, $cipher_method, $secret_key, 0, $iv);
 $db = new SQLite3('database.db');

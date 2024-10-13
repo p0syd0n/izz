@@ -1,15 +1,17 @@
 <?php
+require 'vendor/autoload.php';
 
+// Load the .env file
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 session_start();
 if (!isset($_SESSION["username"])) {
     header("Location: /login.php");
 }
 
-// A secure secret key (should be stored securely, not hardcoded like this)
-$secret_key = 'my_super_secret_key';
-$iv = '1234567890123456'; 
-// Cipher method to use (AES-256-CBC is a common, strong choice)
-$cipher_method = 'AES-256-CBC';
+$secret_key = $_ENV['secret_key'];
+$iv = $_ENV['iv'];
+$cipher_method = $_ENV['cipher_method'];
 
 // Open a connection to the SQLite database
 $db = new SQLite3('database.db');

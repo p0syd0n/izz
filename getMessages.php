@@ -1,4 +1,5 @@
 <?php
+// Require .env library
 require 'vendor/autoload.php';
 
 // Load the .env file
@@ -9,6 +10,7 @@ if (!isset($_SESSION["username"])) {
     header("Location: /login.php");
 }
 
+// Get encryption info
 $secret_key = $_ENV['secret_key'];
 $iv = $_ENV['iv'];
 $cipher_method = $_ENV['cipher_method'];
@@ -20,7 +22,7 @@ $db = new SQLite3('database.db');
 $query = "SELECT * FROM messages ORDER BY created_time ASC";
 $results = $db->query($query);
 
-// Check if query returns rows
+// Go thru and decrypt then all and add to array
 $messages = [];
 if ($results) {
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
@@ -37,6 +39,7 @@ if ($results) {
 // Close the connection
 $db->close();
 
+// Return the messages as a string
 echo implode(",", $messages);
 
 ?>

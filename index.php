@@ -1,15 +1,19 @@
 <?php
+// Requiring .env library
 require 'vendor/autoload.php';
 
 // Load the .env file
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+// Loading the session
 session_start();
+
+// Checking if the user is logged in
 if (!isset($_SESSION["username"])) {
     header("Location: /login.php");
 }
-
+// Getting encryption data from .env
 $secret_key = $_ENV['secret_key'];
 $iv = $_ENV['iv'];
 $cipher_method = $_ENV['cipher_method'];
@@ -21,8 +25,9 @@ $db = new SQLite3('database.db');
 $query = "SELECT * FROM messages ORDER BY created_time ASC";
 $results = $db->query($query);
 
-// Check if query returns rows
+// Initialize array for storing plaintext messages
 $messages = [];
+// Populate the array
 if ($results) {
     while ($row = $results->fetchArray(SQLITE3_ASSOC)) {
         // Log each row using error_log
@@ -43,6 +48,7 @@ $db->close();
     <head>
         <link rel="stylesheet" href="index.css">
     <body>
+        <!-- Hidden element here is used for checking if new messages have arrived !-->
         <p id="data" hidden><?php echo implode(",", $messages); ?></p>
         <?php foreach ($messages as $message): ?>
             <?php 
@@ -64,7 +70,7 @@ $db->close();
     <script>
     setTimeout(async () => {
         const result = await fetch("/getMessages.php");
-        const resultText = await result.text(); // Make sure to read the response as text
+        const resultText = await result.text();
         if (resultText !== document.getElementById("data").textContent) {
             location.reload(); // Reload the page if the messages are different
         }

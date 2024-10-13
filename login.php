@@ -1,8 +1,10 @@
 <?php
+// Initlialize session and check if user is logged in
 session_start();
 if (isset($_SESSION["username"])) {
     header("Location: /");
 }
+// redner message from failed sign in
 $message = isset($_GET['message']) ? $_GET['message'] : '';
 
 ?>

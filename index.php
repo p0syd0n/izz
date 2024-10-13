@@ -63,7 +63,7 @@ $db->close();
         <?php endforeach; ?>
 
         <form action="sendMessage.php" method="POST">
-            <input type="text" name="message" placeholder="message goes here!">
+            <input type="text" name="message" placeholder="message goes here!" autofocus>
             <button type="submit">send (or press enter)</button>
         </form>
     </body>
